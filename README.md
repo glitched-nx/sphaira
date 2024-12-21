@@ -1,5 +1,62 @@
 # sphaira
 
+Ein Homebrew Menü für die Nintendo Switch.
+
+Das Projekt wurde für den persönlichen Gebrauch entwickelt und enthält daher einige spezielle Funktionen, die sich als nützlich erwiesen haben.
+
+[Weitere Details und Diskussionen im gbatemp-Forum](https://gbatemp.net/threads/sphaira-hbmenu-replacement.664523/).
+
+## Vorschau
+
+|                          |                          |
+:-------------------------:|:-------------------------:
+![Bild](assets/screenshots/2024121522512100-879193CD6A8B96CD00931A628B1187CB.jpg) | ![Bild](assets/screenshots/2024121522514300-879193CD6A8B96CD00931A628B1187CB.jpg)
+![Bild](assets/screenshots/2024121522513300-879193CD6A8B96CD00931A628B1187CB.jpg) | ![Bild](assets/screenshots/2024121523084100-879193CD6A8B96CD00931A628B1187CB.jpg)
+![Bild](assets/screenshots/2024121522505300-879193CD6A8B96CD00931A628B1187CB.jpg) | ![Bild](assets/screenshots/2024121522502300-879193CD6A8B96CD00931A628B1187CB.jpg)
+![Bild](assets/screenshots/2024121523033200-879193CD6A8B96CD00931A628B1187CB.jpg) | ![Bild](assets/screenshots/2024121523070300-879193CD6A8B96CD00931A628B1187CB.jpg)
+
+## Fehlermeldungen
+
+Für Fehlermeldungen bitte den Issues-Tab nutzen und das Problem so detailliert wie möglich beschreiben!
+
+Folgende Informationen werden benötigt:
+
+- CFW-Typ (standardmäßig Atmosphere, aber eventuell auch Rajnx)
+- CFW-Version
+- Firmware-Version
+- Beschreibung des Fehlers und Schritte zur Reproduktion
+
+## Dateizuordnungen
+
+sphaira unterstützt Dateizuordnungen. Wenn eine Anwendung beispielsweise .png-Dateien unterstützt, kann eine Zuordnungsdatei erstellt werden. Im Dateibrowser wird dann beim Klicken auf eine .png-Datei die zugeordnete Anwendung gestartet und die .png-Datei als argv[1] übergeben. Diese Funktion wurde hauptsächlich für das Laden von ROMs in Emulatoren und Frontends wie RetroArch, melonDS, mGBA etc. implementiert.
+
+```ini:assets/romfs/assoc/example.ini
+[config]
+path=/switch/your_app.nro
+supported_extensions=jpg|png|mp4|mp3
+```
+
+Das `path`-Feld ist optional. Wird es weggelassen, wird der Name der ini-Datei verwendet, um die nro-Datei zu finden. Beispiel: Bei einer Datei namens mgba.ini wird nach der nro-Datei unter /switch/mgba.nro und /switch/folder/mgba.nro gesucht.
+
+Weitere Beispiele für Dateizuordnungen befinden sich im Verzeichnis `assets/romfs/assoc/`
+
+## Danksagungen
+
+- borealis
+- stb
+- yyjson
+- nx-hbmenu
+- nx-hbloader
+- deko3d-nanovg
+- libpulsar
+- minIni
+- gbatemp
+- hb-appstore
+- Allen Mitwirkenden an diesem Projekt!
+
+---
+# sphaira
+
 A homebrew menu for the switch.
 
 It was built for my usage, as such, features that may seem out of place are included because i found them useful.

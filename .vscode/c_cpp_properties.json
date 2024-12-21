@@ -6,8 +6,8 @@
                 "${default}",
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/sphaira/include",
-                "${DEVKITPRO}/libnx/include/",
-                "${DEVKITPRO}/portlibs/switch/include/"
+                "c:/msys64/opt/devkitpro/libnx/include/",
+                "c:/msys64/opt/devkitpro/portlibs/switch/include/"
             ],
             "defines": [
                 "__SWITCH__",
@@ -20,7 +20,7 @@
             ],
             "cStandard": "gnu17",
             "cppStandard": "gnu++23",
-            "compilerPath": "${DEVKITPRO}/devkitA64/bin/aarch64-none-elf-gcc",
+            "compilerPath": "c:/msys64/opt/devkitpro/devkitA64/bin/aarch64-none-elf-gcc",
             "configurationProvider": "ms-vscode.cmake-tools"
         }
     ],
