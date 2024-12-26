@@ -55,65 +55,122 @@ Weitere Beispiele für Dateizuordnungen befinden sich im Verzeichnis `assets/rom
 - Allen Mitwirkenden an diesem Projekt!
 
 ---
-# sphaira
+---
 
-A homebrew menu for the switch.
+## Sphaira - hbmenu Ersatz
 
-[See the gbatemp thread for more details / discussion](https://gbatemp.net/threads/sphaira-hbmenu-replacement.664523/).
+Sphaira ist eine Alternative zum hbmenu. Es bietet die gleichen Grundfunktionen wie hbmenu (Start von Homebrew + nxlink), enthält aber zusätzlich viele weitere Features.
 
-## showcase
+### HomeBrew
 
-|                          |                          |
-:-------------------------:|:-------------------------:
-![Img](assets/screenshots/2024121522512100-879193CD6A8B96CD00931A628B1187CB.jpg) | ![Img](assets/screenshots/2024121522514300-879193CD6A8B96CD00931A628B1187CB.jpg)
-![Img](assets/screenshots/2024121522513300-879193CD6A8B96CD00931A628B1187CB.jpg) | ![Img](assets/screenshots/2024121523084100-879193CD6A8B96CD00931A628B1187CB.jpg)
-![Img](assets/screenshots/2024121522505300-879193CD6A8B96CD00931A628B1187CB.jpg) | ![Img](assets/screenshots/2024121522502300-879193CD6A8B96CD00931A628B1187CB.jpg)
-![Img](assets/screenshots/2024121523033200-879193CD6A8B96CD00931A628B1187CB.jpg) | ![Img](assets/screenshots/2024121523070300-879193CD6A8B96CD00931A628B1187CB.jpg)
+Der Hauptmenü-Tab listet alle .nro-Dateien auf, die sich in "/switch/" befinden. Von hier aus kannst du Programme starten, sortieren, löschen und Forwarder erstellen.
+Mit den Tasten "L" und "R" navigierst du zu den anderen Menü-Tabs, die unten erklärt werden.
 
-## bug reports
+### DateiBrowser
 
-for any bug reports, please use the issues tab and explain in as much detail as possible!
+Durch Drücken von "L" im Hauptmenü gelangst du zum Dateibrowser. Hier kannst du Dateien ausschneiden, kopieren, löschen, umbenennen und mehr.
+Mit der "ZR"-Taste können mehrere Dateien/Ordner ausgewählt werden, um diese Funktionen auf die gesamte Auswahl anzuwenden.
 
-please include:
+Forwarder können erstellt werden, wenn die ausgewählte Datei eine Dateizuordnung hat (siehe Details unten).
 
-- CFW type (i assume Atmosphere, but someone out there is still using Rajnx)
-- CFW version
-- FW version
-- The bug itself and how to reproduce it
+### Appstore
 
-## ftp
+Sphaira verfügt über einen Appstore, der die API von [https://hb-app.store/switch](https://hb-app.store/switch) nutzt. Du erreichst ihn durch Drücken von "R" im Hauptmenü.
+Der Appstore bietet die gleichen Funktionen wie die hb-appstore App und installiert die Manifeste im selben Ordner wie hb-appstore, um die Kompatibilität zwischen beiden zu gewährleisten.
 
-ftp can be enabled via the network menu and listens on port 5000, no username or password is required.
+### Themes
 
-## mtp
+Sphaira kommt mit 3 Themes: Abyss (Standard), Schwarz und Weiß (unfertig).
+Eigene Themes können unter "/config/sphaira/themes/" hinzugefügt werden. Hier ist ein Beispiel des Abyss-Themes:
 
-mtp can be enabled via the network menu.
+```ini
+[meta]
+name=Abyss
+author=TotalJustice
+version=1.0.0
+; derzeit ungenutzt
+preview=romfs:/theme/preview.jpg
 
-## file assoc
+[theme]
+background=0x0f111aff
+grid=0x0f115c30
+selected=0x0f115cff
+selected_overlay=0x529cffff
+text=0xffbc41ff
+text_selected=0x529cffff
 
-sphaira has file assoc support. lets say your app supports loading .png files, then you could write an assoc file, then when using the file browser, clicking on a .png file will launch your app along with the .png file as argv[1]. This was primarly added for rom loading support for emulators / frontends such as retroarch, melonds, mgba etc.
+icon_audio=romfs:/theme/icon_audio.png
+icon_video=romfs:/theme/icon_video.png
+icon_image=romfs:/theme/icon_image.png
+icon_file=romfs:/theme/icon_file.png
+icon_folder=romfs:/theme/icon_folder.png
+icon_zip=romfs:/theme/icon_zip.png
+icon_nro=romfs:/theme/icon_nro.png
+```
+
+Musik kann zu einem Theme hinzugefügt werden, sofern sie im bfstm-Format vorliegt. Füge dazu einfach einen Eintrag wie folgt hinzu: `music=/config/sphaira/themes/music/bgmusic_pcm.bfstm`
+
+### Forwarder
+
+Sphaira kann Forwarder für jede .nro-Datei erstellen und installieren. Dabei wird das Icon der .nro-Datei sowie Name und Autor verwendet.
+
+Es können auch Forwarder für Dateien mit Dateizuordnung erstellt werden. Wenn zum Beispiel mgba installiert ist und sich ein Spiel unter "/roms/gba/game.gba" befindet, erscheint die Option "Forwarder installieren". In diesem Fall wird versucht, das Icon des Spiels zu extrahieren, andernfalls wird das Icon der .nro-Datei verwendet und der Name wird aus einer Kombination von .nro-Name und Spielname gebildet.
+
+### Dateizuordnungen
+
+Dateizuordnungen ermöglichen es, Dateierweiterungen (.gba, .nro etc.) mit einer Homebrew-App zu verknüpfen. Beim Klicken auf eine rom.gbc-Datei mit Zuordnung erscheint eine Liste aller Anwendungen, die diese Datei öffnen können.
+Dies kann für Emulatoren, Mediaplayer, Texteditoren etc. verwendet werden.
+
+Eigene Dateizuordnungen gehören in den Ordner "/config/sphaira/assoc/"
+
+Das Format ist *sehr* einfach. Hier ein Beispiel für vgedit.ini:
 
 ```ini
 [config]
-path=/switch/your_app.nro
-supported_extensions=jpg|png|mp4|mp3
+supported_extensions=txt|json|cfg|ini|md|log
 ```
 
-the `path` field is optional. if left out, it will use the name of the ini to find the nro. For example, if the ini is called mgba.ini, it will try to find the nro in /switch/mgba.nro and /switch/folder/mgba.nro.
+Und hier für mgba.ini:
 
-see `assets/romfs/assoc/` for more examples of file assoc entries
+```ini
+[config]
+supported_extensions=gba|gbc|sgb|gb
+database=Nintendo - Game Boy|Nintendo - Game Boy Color|Nintendo - Game Boy Advance
+```
 
-## Credits
+"path": (optional) Vollständiger Pfad zur .nro-Datei. Wenn nicht angegeben, wird der Name der ini-Datei verwendet, z.B. verwendet mgba.ini die mgba.nro.
+"supported_extensions": Liste der unterstützten Dateierweiterungen, getrennt durch |
+"database": (optional) Name der ROM-Datenbank, definiert durch die linke Seite dieser Tabelle [https://gist.github.com/ITotalJustice/d5e82ba601ca13b638af9b00e33a4a86](https://gist.github.com/ITotalJustice/d5e82ba601ca13b638af9b00e33a4a86)
 
-- borealis
-- stb
-- yyjson
-- nx-hbmenu
-- nx-hbloader
-- deko3d-nanovg
-- libpulsar
-- minIni
-- gbatemp
-- hb-appstore
-- haze
-- everyone who has contributed to this project!
+Alle RetroArch-Cores haben in sphaira integrierte Dateizuordnungen. Wenn du RetroArch über den Appstore herunterlädst und dann zu "/roms/gbc/game.gbc" navigierst, stehen Gambatte und mGBA zur Auswahl.
+
+Spiele können im .zip-Format bleiben. Sphaira schaut in die .zip-Datei und erkennt die tatsächliche Erweiterung für die Anzeige von Icons/Dateizuordnungen.
+
+### ROMs
+
+ROMs sollten unter "/roms/system_name/" abgelegt werden, wobei system_name durch die Einträge auf der rechten Seite dieser Tabelle definiert ist: [https://gist.github.com/ITotalJustice/d5e82ba601ca13b638af9b00e33a4a86](https://gist.github.com/ITotalJustice/d5e82ba601ca13b638af9b00e33a4a86)
+Dies entspricht dem Layout von EmulationStation. Die Einsortierung in spezifische Ordner ist notwendig, da viele ROMs verschiedener Systeme die gleichen Dateierweiterungen verwenden, z.B. .bin/.cue oder .chd.
+
+ROMs können auch in Unterordnern abgelegt werden, zum Beispiel ist "/roms/psx/scooby-doo/scooby-doo.bin" gültig.
+
+### Themezer
+
+Themes können über Menü-Optionen -> Verschiedenes -> Themezer durchsucht und heruntergeladen werden. Themes werden nach "/themes/sphaira/Theme Name - By Author/" heruntergeladen.
+Um Themes zu installieren, starte "NXThemes Installer" und navigiere zum entsprechenden Ordner.
+
+### IRS
+
+InfraRot-Sensor. Eine kleine Spielerei-App, die ich vor etwa 4 Jahren entwickelt habe und die die Ausgabe des Joycon-IRS anzeigt. Damit kannst du Selfies machen! 😊
+
+### Web
+
+Startet den eingebauten Webbrowser - er ist nicht besonders gut.
+
+### Nxlink
+
+Für Homebrew-Entwickler ist nxlink in sphaira integriert. Du musst keine speziellen Tasten drücken, führe einfach "nxlink *.nro" aus und sende deine nro wie gewohnt. Konsolenprotokollierung funktioniert mit "nxlink -s *.nro"
+Standardmäßig ist dies im Hintergrund aktiviert. Zum Deaktivieren: Menü-Optionen -> Netzwerk -> Nxlink.
+
+---
+
+Das sind die wichtigsten Funktionen von sphaira. Wenn es dir so gut gefällt, dass du es anstelle des regulären hbmenu verwenden möchtest, kannst du die Option unter "Menü-Optionen -> hbmenu beim Beenden ersetzen" aktivieren. Dabei wird eine Sicherungskopie von hbmenu unter "/switch/hbmenu.nro" erstellt, falls du zurückwechseln möchtest.
