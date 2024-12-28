@@ -276,9 +276,9 @@ void App::Loop() {
                             App::Notify("Nxlink Finished"_i18n);
                             break;
                     }
-                } else if constexpr(std::is_same_v<T, DownloadEventData>) {
+                } else if constexpr(std::is_same_v<T, curl::DownloadEventData>) {
                     log_write("[DownloadEventData] got event\n");
-                    arg.callback(arg.data, arg.result);
+                    arg.callback(arg.data, arg.result, arg.code);
                 } else {
                     static_assert(false, "non-exhaustive visitor!");
                 }
@@ -845,6 +845,10 @@ void App::ScanThemes(const std::string& path) {
             continue;
         }
 
+        if (d->d_type != DT_REG) {
+            continue;
+        }
+
         const std::string name = d->d_name;
         if (!name.ends_with(".ini")) {
             continue;
@@ -917,6 +921,8 @@ App::App(const char* argv0) {
     fs::FsNativeSd fs;
     fs.CreateDirectoryRecursively("/config/sphaira/assoc");
     fs.CreateDirectoryRecursively("/config/sphaira/themes");
+    fs.CreateDirectoryRecursively("/config/sphaira/github");
+    fs.CreateDirectoryRecursively("/config/sphaira/i18n");
 
     if (App::GetLogEnable()) {
         log_file_init();
@@ -935,7 +941,7 @@ App::App(const char* argv0) {
         nxlinkInitialize(nxlink_callback);
     }
 
-    DownloadInit();
+    curl::Init();
 
     // Create the deko3d device
     this->device = dk::DeviceMaker{}
@@ -1090,7 +1096,7 @@ App::~App() {
     log_write("starting to exit\n");
 
     i18n::exit();
-    DownloadExit();
+    curl::Exit();
 
     // this has to be called before any cleanup to ensure the lifetime of
     // nvg is still active as some widgets may need to free images.
